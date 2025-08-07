@@ -1,0 +1,298 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Carbon Footprint Tracker{% endblock %}
+
+{% block content %}
+<!-- Welcome Section -->
+<div class="main-content">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="fw-bold">
+                <i class="fas fa-tachometer-alt me-2 text-primary"></i>Welcome, {{ household.name }}!
+            </h2>
+            <p class="text-muted">Track your household's carbon footprint and discover ways to live more sustainably.</p>
+        </div>
+    </div>
+    
+    <!-- Current Month Stats -->
+    {% if current_footprint %}
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-number">{{ current_footprint.total_footprint|floatformat:1 }}</div>
+                <div>Total CO₂e (kg)</div>
+                <small>This Month</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-number">{{ per_person|floatformat:1 }}</div>
+                <div>Per Person (kg)</div>
+                <small>CO₂e per person</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-number">{{ household.family_size }}</div>
+                <div>Family Size</div>
+                <small>Household members</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-number">
+                    {% if category == 'low' %}
+                        <i class="fas fa-leaf text-success"></i>
+                    {% elif category == 'medium' %}
+                        <i class="fas fa-leaf text-warning"></i>
+                    {% else %}
+                        <i class="fas fa-leaf text-danger"></i>
+                    {% endif %}
+                </div>
+                <div>{{ category|title }}</div>
+                <small>Footprint Level</small>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footprint Breakdown -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-pie me-2"></i>Footprint Breakdown
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Energy</span>
+                            <span>{{ current_footprint.energy_footprint|floatformat:1 }} kg CO₂e</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar bg-warning" style="width: {% widthratio current_footprint.energy_footprint current_footprint.total_footprint 100 %}%"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Transport</span>
+                            <span>{{ current_footprint.transport_footprint|floatformat:1 }} kg CO₂e</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar bg-info" style="width: {% widthratio current_footprint.transport_footprint current_footprint.total_footprint 100 %}%"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Diet</span>
+                            <span>{{ current_footprint.diet_footprint|floatformat:1 }} kg CO₂e</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar bg-danger" style="width: {% widthratio current_footprint.diet_footprint current_footprint.total_footprint 100 %}%"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Waste</span>
+                            <span>{{ current_footprint.waste_footprint|floatformat:1 }} kg CO₂e</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar bg-secondary" style="width: {% widthratio current_footprint.waste_footprint current_footprint.total_footprint 100 %}%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle me-2"></i>Your Impact Status
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-{{ category }} border-0">
+                        <h6 class="alert-heading">
+                            {% if category == 'low' %}
+                                <i class="fas fa-thumbs-up me-2"></i>Excellent!
+                            {% elif category == 'medium' %}
+                                <i class="fas fa-hand-paper me-2"></i>Good Effort!
+                            {% else %}
+                                <i class="fas fa-exclamation-triangle me-2"></i>Needs Improvement
+                            {% endif %}
+                        </h6>
+                        <p class="mb-0">{{ message }}</p>
+                    </div>
+                    
+                    <div class="mt-3">
+                        <h6>Indian Household Averages (per person/month):</h6>
+                        <ul class="list-unstyled">
+                            <li><small class="text-muted">Low Income: ~150 kg CO₂e</small></li>
+                            <li><small class="text-muted">Middle Income: ~300 kg CO₂e</small></li>
+                            <li><small class="text-muted">High Income: ~600 kg CO₂e</small></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="alert alert-info text-center">
+                <h5><i class="fas fa-info-circle me-2"></i>No Data Available</h5>
+                <p class="mb-3">You haven't added any data for the current month yet.</p>
+                <a href="{% url 'bulk_data_entry' %}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>Add Your Data
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Quick Actions -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h5 class="fw-bold mb-3">
+                <i class="fas fa-bolt me-2"></i>Quick Actions
+            </h5>
+        </div>
+    </div>
+    
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <a href="{% url 'bulk_data_entry' %}" class="card text-decoration-none">
+                <div class="card-body text-center">
+                    <i class="fas fa-database fa-2x text-primary mb-2"></i>
+                    <h6 class="card-title">Bulk Data Entry</h6>
+                    <small class="text-muted">Add all your data at once</small>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="{% url 'add_energy_data' %}" class="card text-decoration-none">
+                <div class="card-body text-center">
+                    <i class="fas fa-bolt fa-2x text-warning mb-2"></i>
+                    <h6 class="card-title">Energy Data</h6>
+                    <small class="text-muted">Add electricity, LPG usage</small>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="{% url 'add_transport_data' %}" class="card text-decoration-none">
+                <div class="card-body text-center">
+                    <i class="fas fa-car fa-2x text-info mb-2"></i>
+                    <h6 class="card-title">Transport Data</h6>
+                    <small class="text-muted">Add travel information</small>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="{% url 'tips' %}" class="card text-decoration-none">
+                <div class="card-body text-center">
+                    <i class="fas fa-lightbulb fa-2x text-success mb-2"></i>
+                    <h6 class="card-title">Sustainability Tips</h6>
+                    <small class="text-muted">Get personalized advice</small>
+                </div>
+            </a>
+        </div>
+    </div>
+    
+    <!-- Historical Chart -->
+    {% if footprints %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-line me-2"></i>Your Carbon Footprint Trend
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="footprintChart" height="100"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Tips Section -->
+    {% if tips %}
+    <div class="row">
+        <div class="col-12">
+            <h5 class="fw-bold mb-3">
+                <i class="fas fa-lightbulb me-2"></i>Personalized Tips for You
+            </h5>
+        </div>
+    </div>
+    
+    <div class="row g-3">
+        {% for tip in tips %}
+        <div class="col-md-6">
+            <div class="card tip-card">
+                <div class="card-body">
+                    <h6 class="card-title">
+                        <i class="fas fa-star text-warning me-2"></i>{{ tip.title }}
+                    </h6>
+                    <p class="card-text small">{{ tip.description|truncatewords:20 }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-primary">{{ tip.get_category_display }}</span>
+                        <small class="text-muted">Saves {{ tip.impact_kg_co2 }} kg CO₂e</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="text-center mt-4">
+        <a href="{% url 'tips' %}" class="btn btn-outline-primary">
+            <i class="fas fa-lightbulb me-2"></i>View All Tips
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% if footprints %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('footprintChart').getContext('2d');
+    
+    fetch('{% url "api_footprint_data" %}')
+        .then(response => response.json())
+        .then(data => {
+            new Chart(ctx, {
+                type: 'line',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Monthly Carbon Footprint Trend'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'CO₂e (kg)'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+});
+</script>
+{% endif %}
+{% endblock %} 

@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Carbon Footprint Tracker{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h1 class="display-4 fw-bold mb-4">
+                    <span class="indian-flag-colors">Track Your Carbon Footprint</span>
+                </h1>
+                <p class="lead mb-4">
+                    Join millions of Indians in the fight against climate change. 
+                    Monitor your household's environmental impact and discover ways to live more sustainably.
+                </p>
+                <div class="d-flex gap-3 justify-content-center">
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'dashboard' %}" class="btn btn-light btn-lg">
+                        <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
+                    </a>
+                    {% else %}
+                    <a href="{% url 'register' %}" class="btn btn-light btn-lg">
+                        <i class="fas fa-user-plus me-2"></i>Get Started
+                    </a>
+                    <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-sign-in-alt me-2"></i>Login
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="main-content">
+    <div class="row text-center mb-5">
+        <div class="col-12">
+            <h2 class="fw-bold mb-4">Why Track Your Carbon Footprint?</h2>
+            <p class="lead text-muted">India is committed to achieving net-zero emissions by 2070. Every household's contribution matters.</p>
+        </div>
+    </div>
+    
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card h-100 text-center">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="fas fa-chart-line fa-3x text-primary"></i>
+                    </div>
+                    <h5 class="card-title">Track & Monitor</h5>
+                    <p class="card-text">Monitor your household's energy consumption, transportation, diet, and waste generation with Indian-specific calculations.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card h-100 text-center">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="fas fa-lightbulb fa-3x text-warning"></i>
+                    </div>
+                    <h5 class="card-title">Get Indian Tips</h5>
+                    <p class="card-text">Receive personalized sustainability tips tailored for Indian households, including traditional practices and modern solutions.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card h-100 text-center">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="fas fa-leaf fa-3x text-success"></i>
+                    </div>
+                    <h5 class="card-title">Reduce Impact</h5>
+                    <p class="card-text">Discover practical ways to reduce your carbon footprint and save money on electricity, fuel, and other expenses.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Indian Context Section -->
+    <div class="row mb-5">
+        <div class="col-lg-6">
+            <h3 class="fw-bold mb-4">Made for Indian Households</h3>
+            <ul class="list-unstyled">
+                <li class="mb-3">
+                    <i class="fas fa-check-circle text-success me-2"></i>
+                    <strong>Indian Emission Factors:</strong> Calculations based on India's energy mix and consumption patterns
+                </li>
+                <li class="mb-3">
+                    <i class="fas fa-check-circle text-success me-2"></i>
+                    <strong>Local Transportation:</strong> Includes auto-rickshaws, metro, and Indian public transport
+                </li>
+                <li class="mb-3">
+                    <i class="fas fa-check-circle text-success me-2"></i>
+                    <strong>Traditional Diets:</strong> Considers Indian food habits and local produce
+                </li>
+                <li class="mb-3">
+                    <i class="fas fa-check-circle text-success me-2"></i>
+                    <strong>Waste Management:</strong> Addresses India's unique waste composition and disposal methods
+                </li>
+                <li class="mb-3">
+                    <i class="fas fa-check-circle text-success me-2"></i>
+                    <strong>Cost Savings:</strong> Tips to reduce electricity bills and fuel costs in Indian context
+                </li>
+            </ul>
+        </div>
+        
+        <div class="col-lg-6">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h5 class="card-title text-center mb-4">
+                        <i class="fas fa-flag me-2"></i>India's Climate Goals
+                    </h5>
+                    <div class="row text-center">
+                        <div class="col-6 mb-3">
+                            <div class="stat-number text-primary">2070</div>
+                            <small class="text-muted">Net Zero Target</small>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <div class="stat-number text-success">500 GW</div>
+                            <small class="text-muted">Renewable Energy by 2030</small>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <div class="stat-number text-info">45%</div>
+                            <small class="text-muted">Emission Intensity Reduction</small>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <div class="stat-number text-warning">1 Billion</div>
+                            <small class="text-muted">Tonnes CO2 Reduction</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- How It Works -->
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h3 class="fw-bold mb-5">How It Works</h3>
+        </div>
+    </div>
+    
+    <div class="row g-4">
+        <div class="col-md-3 text-center">
+            <div class="card border-0 bg-transparent">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                            <span class="fw-bold">1</span>
+                        </div>
+                    </div>
+                    <h6 class="fw-bold">Register</h6>
+                    <p class="small text-muted">Create your account and set up your household profile</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 text-center">
+            <div class="card border-0 bg-transparent">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                            <span class="fw-bold">2</span>
+                        </div>
+                    </div>
+                    <h6 class="fw-bold">Input Data</h6>
+                    <p class="small text-muted">Enter your monthly energy, transport, diet, and waste data</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 text-center">
+            <div class="card border-0 bg-transparent">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                            <span class="fw-bold">3</span>
+                        </div>
+                    </div>
+                    <h6 class="fw-bold">Calculate</h6>
+                    <p class="small text-muted">Get your carbon footprint calculated using Indian emission factors</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 text-center">
+            <div class="card border-0 bg-transparent">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                            <span class="fw-bold">4</span>
+                        </div>
+                    </div>
+                    <h6 class="fw-bold">Improve</h6>
+                    <p class="small text-muted">Receive personalized tips to reduce your environmental impact</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action -->
+<div class="text-center py-5">
+    <div class="container">
+        <h3 class="fw-bold mb-4">Ready to Start Your Sustainability Journey?</h3>
+        <p class="lead mb-4">Join thousands of Indian households already tracking their carbon footprint</p>
+        {% if not user.is_authenticated %}
+        <a href="{% url 'register' %}" class="btn btn-primary btn-lg">
+            <i class="fas fa-rocket me-2"></i>Start Tracking Now
+        </a>
+        {% else %}
+        <a href="{% url 'dashboard' %}" class="btn btn-primary btn-lg">
+            <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
+        </a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% block title %}Sustainability Tips - Carbon Footprint Tracker{% endblock %}
+
+{% block content %}
+<div class="main-content">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="fw-bold">
+                <i class="fas fa-lightbulb me-2 text-warning"></i>Sustainability Tips
+            </h2>
+            <p class="text-muted">Discover practical ways to reduce your carbon footprint with Indian-specific solutions.</p>
+        </div>
+    </div>
+    
+    <!-- Category Filter -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="mb-3">Filter by Category:</h6>
+                    <div class="btn-group" role="group">
+                        <a href="{% url 'tips' %}" class="btn btn-outline-primary {% if not selected_category %}active{% endif %}">
+                            All Tips
+                        </a>
+                        <a href="{% url 'tips' %}?category=energy" class="btn btn-outline-warning {% if selected_category == 'energy' %}active{% endif %}">
+                            <i class="fas fa-bolt me-1"></i>Energy
+                        </a>
+                        <a href="{% url 'tips' %}?category=transport" class="btn btn-outline-info {% if selected_category == 'transport' %}active{% endif %}">
+                            <i class="fas fa-car me-1"></i>Transport
+                        </a>
+                        <a href="{% url 'tips' %}?category=diet" class="btn btn-outline-danger {% if selected_category == 'diet' %}active{% endif %}">
+                            <i class="fas fa-utensils me-1"></i>Diet
+                        </a>
+                        <a href="{% url 'tips' %}?category=waste" class="btn btn-outline-secondary {% if selected_category == 'waste' %}active{% endif %}">
+                            <i class="fas fa-trash me-1"></i>Waste
+                        </a>
+                        <a href="{% url 'tips' %}?category=general" class="btn btn-outline-success {% if selected_category == 'general' %}active{% endif %}">
+                            <i class="fas fa-leaf me-1"></i>General
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Tips Grid -->
+    <div class="row g-4">
+        {% for tip in tips %}
+        <div class="col-lg-6">
+            <div class="card tip-card h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h5 class="card-title">
+                            <i class="fas fa-star text-warning me-2"></i>{{ tip.title }}
+                        </h5>
+                        <span class="badge bg-primary">{{ tip.get_category_display }}</span>
+                    </div>
+                    
+                    <p class="card-text">{{ tip.description }}</p>
+                    
+                    <div class="row mt-3">
+                        <div class="col-6">
+                            <div class="text-center">
+                                <div class="h4 text-success mb-1">{{ tip.impact_kg_co2 }}</div>
+                                <small class="text-muted">kg CO₂e saved</small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-center">
+                                <div class="h4 text-info mb-1">
+                                    {% if tip.indian_context %}
+                                        <i class="fas fa-flag text-warning"></i>
+                                    {% else %}
+                                        <i class="fas fa-globe text-info"></i>
+                                    {% endif %}
+                                </div>
+                                <small class="text-muted">
+                                    {% if tip.indian_context %}
+                                        Indian Context
+                                    {% else %}
+                                        Global Tip
+                                    {% endif %}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info text-center">
+                <h5><i class="fas fa-info-circle me-2"></i>No Tips Available</h5>
+                <p class="mb-0">No tips found for the selected category. Try selecting a different category or check back later.</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Indian Context Information -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fas fa-flag me-2 text-warning"></i>Why Indian-Specific Tips Matter
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Indian Context Tips Include:</h6>
+                            <ul>
+                                <li>Traditional Indian practices and wisdom</li>
+                                <li>Local transportation options (auto-rickshaws, metro)</li>
+                                <li>Indian food habits and dietary patterns</li>
+                                <li>Local waste management challenges</li>
+                                <li>Cost-effective solutions for Indian households</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Benefits:</h6>
+                            <ul>
+                                <li>More relevant and practical advice</li>
+                                <li>Cost savings in Indian Rupees</li>
+                                <li>Cultural appropriateness</li>
+                                <li>Local resource availability</li>
+                                <li>Better adoption rates</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Call to Action -->
+    <div class="text-center mt-5">
+        <h5 class="fw-bold mb-3">Ready to Implement These Tips?</h5>
+        <p class="text-muted mb-4">Start tracking your progress and see how these changes impact your carbon footprint.</p>
+        <a href="{% url 'dashboard' %}" class="btn btn-primary btn-lg">
+            <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
+        </a>
+    </div>
+</div>
+{% endblock %} 

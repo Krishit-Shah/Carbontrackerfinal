@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Setup Household - Carbon Footprint Tracker{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="main-content">
+            <div class="text-center mb-4">
+                <h2 class="fw-bold">
+                    <i class="fas fa-home me-2 text-primary"></i>Setup Your Household
+                </h2>
+                <p class="text-muted">Tell us about your household to get personalized carbon footprint calculations</p>
+            </div>
+            
+            <form method="post">
+                {% csrf_token %}
+                {{ form|crispy }}
+                
+                <div class="alert alert-info">
+                    <h6><i class="fas fa-info-circle me-2"></i>Why We Need This Information:</h6>
+                    <ul class="mb-0">
+                        <li><strong>Family Size:</strong> To calculate per-person carbon footprint</li>
+                        <li><strong>Location:</strong> To provide region-specific tips and comparisons</li>
+                        <li><strong>Address:</strong> To understand local environmental factors</li>
+                    </ul>
+                </div>
+                
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-save me-2"></i>Save Household Information
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} 

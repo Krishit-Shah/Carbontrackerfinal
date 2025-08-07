@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Register - Carbon Footprint Tracker{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="main-content">
+            <div class="text-center mb-4">
+                <h2 class="fw-bold">
+                    <i class="fas fa-user-plus me-2 text-primary"></i>Create Account
+                </h2>
+                <p class="text-muted">Join the movement towards a sustainable India</p>
+            </div>
+            
+            <form method="post">
+                {% csrf_token %}
+                {{ form|crispy }}
+                
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-user-plus me-2"></i>Create Account
+                    </button>
+                </div>
+            </form>
+            
+            <div class="text-center mt-4">
+                <p class="mb-0">Already have an account? 
+                    <a href="{% url 'login' %}" class="text-primary fw-bold">Login here</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
